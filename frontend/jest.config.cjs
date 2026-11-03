@@ -5,8 +5,9 @@ module.exports = {
     transform: {
         '^.+\\.[jt]sx?$':'babel-jest',
     },
+    setupFiles: ['<rootDir>/src/setupTests.js'],
 
-    setupFilesAfterEnv : ['<rootDir>/src/setupTests.js'],
+    setupFilesAfterEnv : ['<rootDir>/src/setupAfterEnv.js'],
 
     moduleNameMapper: {
         '\\.(css|less|scss|sass)$': '<rootDir>/src/testStyleMock.cjs',

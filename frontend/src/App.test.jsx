@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import axios from 'axios'
+import { MemoryRouter } from 'react-router-dom'
 import App from './App'
-
 // Mock Axios so the test does not need a running backend.
 jest.mock('axios')
 
@@ -15,11 +15,11 @@ beforeEach(() => {
 })
 
 test('renders the Employee Management heading',async () => {
-    render(<App />)
+    render(<MemoryRouter><App /></MemoryRouter>)
 
     expect(
         screen.getByRole('heading', {
-            name: /employee management/i,
+            name: 'Dashboard',
         })
     ).toBeInTheDocument()
 
@@ -31,13 +31,17 @@ test('renders the Employee Management heading',async () => {
 
 
 test('shows validation errors when the form is submitted empty', async () => {
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>
+)
     
 
-    // wait for the employee-loading request to finish.
+   /*  // wait for the employee-loading request to finish.
     await waitFor(() => {
         expect(axios.get).toHaveBeenCalled()
-    })
+    }) */
     
     // Find the form and bypass browser-native validation
     // So we can test our custom React validation.
@@ -82,7 +86,11 @@ test('submits valid employee details to the API', async () => {
         },
     })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Enter valid employee details.
     await user.type(
@@ -141,7 +149,11 @@ test('displays employees returned by the API', async () => {
     })
 
     // Act: Render the React application.
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Assert: Verify that the employee appears in the list.
     expect(await screen.findByText('Arun kumar')).toBeInTheDocument()
@@ -164,7 +176,11 @@ test('loads employee details into the form when Edit is clicked', async () => {
         ],
     })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees']}>
+    <App />
+    </MemoryRouter>
+)
 
     // wait until the employee is displayed.
     await screen.findByText('Arun kumar')
@@ -204,7 +220,11 @@ test('updates an existing employee', async () => {
         data: { ...employee,age: 26},      
     })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Wait for the employee to appear.
     await screen.findByText('Arun kumar')
@@ -265,15 +285,26 @@ test('deletes an existing employee',async () => {
         .spyOn(window, 'confirm')
         .mockReturnValue(true)
     try{
-        render(<App />)
+        render(
+    <MemoryRouter initialEntries={['/employees']}>
+    <App />
+    </MemoryRouter>
+)
 
         // Wait until the employee appears.
         await screen.findByText('Arun kumar')
 
-        // Click Delete.
+        // Open the delete confirmation modal.
         await user.click(
-            screen.getByRole('button', { name: /delete/i })
+            screen.getByRole('button', { name: 'Delete' })
         )
+
+        // Confirm deletion in the modal.
+        const deleteButtons = screen.getAllByRole('button', {
+            name: 'Delete'
+        })
+
+        await user.click(deleteButtons[deleteButtons.length - 1])
 
         // Verify that the correct employee was deleted.
         await waitFor(() => {
@@ -308,7 +339,11 @@ test('prevents duplicate API requests during repeated form submission', async ()
     // The initial Load and the post-save refresh return an empty list.
     axios.get.mockResolvedValue({ data: [] })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Enter valid employee details.
     await user.type(
@@ -352,7 +387,7 @@ test('prevents duplicate API requests during repeated form submission', async ()
     // Wait for the save operation to finish.
     expect(
         await screen.findByText(
-            'Employee saved successfully! Database ID: 101'
+            'Employee added successfully!'
         )
     ).toBeInTheDocument()
 
@@ -375,7 +410,10 @@ test('displays an error when the employee ID already exists', async () => {
 
     axios.get.mockResolvedValue({ data: [] })
     
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>)
 
     await user.type(
         screen.getByLabelText(/employee name/i),
@@ -416,7 +454,11 @@ test('displays a connection error and unlocks the form when the backend is unava
     axios.post.mockRejectedValue(new Error('Network Error'))
     axios.get.mockResolvedValue({ data: [] })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Enter valid employee details.
     await user.type(
@@ -476,7 +518,11 @@ test('displays the server error message when the backend returns HTTP 500', asyn
     // Employee list loads successfully.
     axios.get.mockRejectedValue({ data: [] })
 
-    render(<App />)
+    render(
+    <MemoryRouter initialEntries={['/employees/new']}>
+    <App />
+    </MemoryRouter>
+)
 
     // Enter valid employee details.
     await user.type(

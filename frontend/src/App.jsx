@@ -4,7 +4,6 @@ import About from './pages/About'
 import Dashboard from './pages/Dashboard'
 import EmployeeForm from './pages/EmployeeForm'
 import Employees from './pages/Employees'
-
 function App() {
     return (
         <div className="min-h-screen bg-slate-50">
