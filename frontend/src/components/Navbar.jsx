@@ -37,8 +37,8 @@ function Navbar() {
         document.addEventListener('keydown', handleEscapseKey)
 
         return () => {
-            document.addEventListener('mousedown', handleOutsideClick)
-            document.addEventListener('keydown', handleEscapseKey)
+            document.removeEventListener('mousedown', handleOutsideClick)
+            document.removeEventListener('krydown', handleEscapseKey)
         }
     }, [menuOpen])
 
