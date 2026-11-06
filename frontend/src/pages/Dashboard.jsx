@@ -1,8 +1,7 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import api from '../services/api'
 
-const API_URL = 'http://127.0.0.1:8000'
 
 function Dashboard() {
     const [employees, setEmployees] = useState([])
@@ -15,7 +14,7 @@ function Dashboard() {
 
         async function loadEmployees() {
             try {
-                const response = await axios.get(`${API_URL}/employees`)
+                const response = await api.get('/employees')
                 if (!cancelled) {
                     setEmployees(response.data)
                     setError('')

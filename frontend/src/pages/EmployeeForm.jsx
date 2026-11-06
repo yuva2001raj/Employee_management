@@ -1,11 +1,11 @@
-import axios from 'axios'
 import { useEffect, useRef, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import api from '../services/api'
 
 import Button from '../components/Button'
 import Input from '../components/Input'
 
-const API_URL = 'http://127.0.0.1:8000'
+
 
 function EmployeeForm() {
     const navigate = useNavigate()
@@ -38,7 +38,7 @@ function EmployeeForm() {
 
         async function loadEmployee() {
             try {
-                const response = await axios.get(`${API_URL}/employees`)
+                const response = await api.get('/employees')
 
                 const selectedEmployee = response.data.find(
                     (item) => String(item.id) === String(id)
@@ -187,14 +187,14 @@ function EmployeeForm() {
 
             if (isEditing) {
                 // PUT: Update existing employee.
-                await axios.put(
-                    `${API_URL}/employees/${id}`,
+                await api.put(
+                    `/employees/${id}`,
                     employeeData
                 )
             } else {
                 // Post: Create a new employee.
-                await axios.post(
-                    `${API_URL}/employees/`,
+                await api.post(
+                    `/employees/`,
                     employeeData
                 )
             }

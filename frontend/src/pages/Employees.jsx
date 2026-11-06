@@ -1,11 +1,9 @@
-import axios from 'axios'
-import { useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import DeleteModal from '../components/DeleteModal'
+import api from '../services/api'
 
 
-
-const API_URL = 'http://127.0.0.1:8000'
 
 function Employees() {
     const navigate = useNavigate()
@@ -31,6 +29,15 @@ function Employees() {
     // Tracks whether the employee deletion API request is in progress.
     const [isDeleting, setIsDeleting] = useState(false)
 
+    // Employee selected for login account creation
+    const [employeeForAccount, setEmployeeForAccount] = useState(null)
+    // Login account form fields.
+    const [accountEmail, setAccountEmail] = useState('')
+    const [accountPassword, setAccountPassword] = useState('')
+
+    // Account creation loading state.
+    const [isCreatingAccount, setIsCreatingAccount] = useState(false)
+
     const location = useLocation()
     //Success notification from Add or Update.
     const [successNotice, setSuccessNotice ] = useState(
@@ -49,9 +56,9 @@ function Employees() {
     }, [successNotice])
 
     // Load employees from FastAPI.
-    async function loadEmployees() {
+    const loadEmployees = useCallback(async ()  => {
         try {
-            const response = await axios.get(`${API_URL}/employees`)
+            const response = await api.get('/employees')
             setEmployees(response.data)
             setMessage('')
         } catch (error) {
@@ -61,16 +68,15 @@ function Employees() {
             setIsLoading(false)
         }
         
-    }
+    } ,[])
 
     // Load employees when this page first opens.
     useEffect(() => {
-        let cancelled = false
+        let isMounted = true
 
-        axios
-            .get(`${API_URL}/employees`)
-            .then ((response) => {
-                if (!cancelled) {
+        api.get('/employees')
+            .then((response) => {
+                if (isMounted) {
                     setEmployees(response.data)
                     setMessage('')
                 }
@@ -78,20 +84,19 @@ function Employees() {
             .catch((error) => {
                 console.error('Error loading employees:', error)
 
-                if (!cancelled) {
+                if (isMounted) {
                     setMessage('Unable to load employees. Check the backend.')
                 }
             })
             .finally(() => {
-                if (!cancelled) {
+                if (isMounted) {
                     setIsLoading(false)
                 }
             })
 
-            return () => {
-                cancelled = true
-            }
-            
+        return () => {
+        isMounted = false
+        }
     }, [])
 
     // Search and filter employees.
@@ -146,6 +151,45 @@ function Employees() {
         setEmployeeToDelete(employee)
     }
 
+    // Open the Create Login form for a selected employee.
+    function handleCreateAccount(employee) {
+        setEmployeeForAccount(employee)
+        setAccountEmail(employee.email || '')
+        setAccountPassword('')
+        setMessage('')
+    }
+
+    // Send the account creation request to FastAPI.
+    async function submitCreateAccount(event) {
+        event.preventDefault()
+        if (isCreatingAccount || !employeeForAccount) return
+
+        setIsCreatingAccount(true)
+        setMessage('')
+        
+        try {
+            const response = await api.post('/auth/create-employee', {
+                email: accountEmail.trim(),
+                password: accountPassword,
+                employee_id: employeeForAccount.id
+            })
+
+            setSuccessNotice(response.data.message || 'Employee account created successfully!')
+            setEmployeeForAccount(null)
+            setAccountEmail('')
+            setAccountPassword('')
+        } catch (error) {
+            console.error('Error creating employee account:', error)
+
+            setMessage(
+                error.response?.data?.detail ||
+                'Unable to create employee account.'
+            )
+        } finally {
+            setIsCreatingAccount(false)
+        }
+    }
+
     // Deletes the selected employee after confirmation.
     async function confirmDelete() {
 
@@ -157,7 +201,7 @@ function Employees() {
 
         try {
             // Send DELETE request to the FastAPI backend
-            await axios.delete(`${API_URL}/employees/${employeeToDelete.id}`)
+            await api.delete(`/employees/${employeeToDelete.id}`)
             setEmployeeToDelete(null)
             setCurrentPage(1)
             await loadEmployees()
@@ -204,6 +248,66 @@ function Employees() {
                 {successNotice || message}
             </div>
         )}
+        
+        {/* Create Employee Login Account */}
+        {employeeForAccount && (
+            <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+                <div className="mb-4 flex items-center justify-between">
+                    <div>
+                        <h2 className="text-lg font-semibold text-slate-800">
+                            Create Employee Login
+                        </h2>
+                        <p className="mt-1 text-sm text-slate-500">
+                            Employee: {employeeForAccount.employee_name}
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => setEmployeeForAccount(null)}
+                        className="rounded-md px-3 py-2 text-sm text-slate-500 hover:bg-slate-100">
+                        Cancel
+                    </button>
+                </div>
+
+                <form onSubmit={submitCreateAccount} className="space-y-4">
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">
+                            Login Email
+                        </label>
+                        <input
+                            type="email"
+                            required
+                            value={accountEmail}
+                            onChange={(event) => setAccountEmail(event.target.value)}
+                            placeholder="Enter employee login email"
+                            className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"/>
+                    </div>
+
+                    <div>
+                        <label className="mb-1 block text-sm font-medium text-slate-700">
+                            Login Password
+                        </label>
+                        <input
+                            type="password"
+                            required
+                            minLength={8}
+                            value={accountPassword}
+                            onChange={(event) => setAccountPassword(event.target.value)}
+                            placeholder="Enter a password"
+                            className="w-full rounded-lg border border-slate-300 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"/>
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={isCreatingAccount}
+                        className="rounded-lg bg-green-600 px-5 py-3 text-sm font-semifold text-white hover:bg-green-700 disabled:cursor-not allowed disabled:opacity-50">
+                        {isCreatingAccount ? 'Creating Account...': 'Create Account'}
+                    </button>
+                </form>
+            </div>
+        )}
+
 
         {/* Employee table section */}
         <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
@@ -285,6 +389,12 @@ function Employees() {
                                                     onClick={() => handleEdit(item.id)}
                                                     className="rounded-md bg-blue-100 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-200">
                                                         Edit
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleCreateAccount(item)}
+                                                    className="rounded-md bg-green-100 px-3 py-2 text-xs font-medium text-green-700 hover:bg-green-200">
+                                                    Create Login
                                                 </button>
 
                                                 <button

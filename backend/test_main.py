@@ -153,7 +153,7 @@ def test_update_duplicate_employee_id(client):
     
     # Try to change the second employee's ID to the first one's ID.
     response = client.put(
-        f"/employees/{second_employee["id"]}",
+        f"/employees/{second_employee['id']}",
         json={"employee_id": first_employee["employee_id"]},
     )
     assert response.status_code == 409
