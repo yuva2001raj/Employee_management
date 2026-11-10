@@ -1,0 +1,307 @@
+{
+  "exit_status": 0,
+  "counts": {
+    "passed": 47,
+    "failed": 0,
+    "skipped": 0
+  },
+  "features": [
+    "API and database",
+    "Authentication and authorization",
+    "Dashboard",
+    "Employee create and validation",
+    "Employee delete",
+    "Employee form validation",
+    "Employee listing and search",
+    "Employee login creation",
+    "Employee profile",
+    "Employee update",
+    "Navigation",
+    "Navigation and access control",
+    "Responsive layout"
+  ],
+  "tests": [
+    {
+      "nodeid": "tests/test_api.py::test_health_endpoint_returns_service_message",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_employee_crud_persists_data_in_isolated_database",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_api_rejects_out_of_range_employee_age[17]",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_api_rejects_out_of_range_employee_age[101]",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_duplicate_employee_id_is_rejected_and_original_record_remains",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_update_and_delete_missing_employee_return_not_found",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_api.py::test_employee_profile_update_keeps_employee_id_unchanged",
+      "feature": "API and database",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_admin_can_sign_in_and_sign_out[chromium]",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_invalid_credentials_show_error[chromium]",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_employee_role_is_limited_to_own_profile[chromium]",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_dashboard.py::test_dashboard_statistics_and_quick_actions[chromium]",
+      "feature": "Dashboard",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_dashboard.py::test_dashboard_add_employee_action_opens_form[chromium]",
+      "feature": "Dashboard",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_add_employee_with_empty_fields_is_blocked[chromium]",
+      "feature": "Employee form validation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_add_employee_rejects_invalid_email[chromium]",
+      "feature": "Employee form validation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_employee_list_layout_at_supported_viewports[chromium-desktop]",
+      "feature": "Responsive layout",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_employee_list_layout_at_supported_viewports[chromium-tablet]",
+      "feature": "Responsive layout",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_employee_list_layout_at_supported_viewports[chromium-mobile]",
+      "feature": "Responsive layout",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_app.py::test_admin_can_navigate_between_about_dashboard_and_employees[chromium]",
+      "feature": "Navigation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_profile.py::test_employee_can_update_own_profile_and_changes_persist[chromium]",
+      "feature": "Employee profile",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_profile.py::test_employee_profile_id_is_not_mutable[chromium]",
+      "feature": "Employee profile",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employee_profile.py::test_employee_profile_update_rejects_duplicate_account_email[chromium]",
+      "feature": "Employee profile",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_search_matches_employee_name_and_id[chromium]",
+      "feature": "Employee listing and search",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_age_filters_include_group_boundaries[chromium]",
+      "feature": "Employee listing and search",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_pagination_page_size_and_filter_reset[chromium]",
+      "feature": "Employee listing and search",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_admin_can_create_employee_from_form[chromium]",
+      "feature": "Employee create and validation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_form_rejects_invalid_name_and_age[chromium]",
+      "feature": "Employee create and validation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_duplicate_employee_id_is_rejected_without_creating_duplicate[chromium]",
+      "feature": "Employee create and validation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_admin_can_edit_employee[chromium]",
+      "feature": "Employee update",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_edit_missing_employee_shows_not_found[chromium]",
+      "feature": "Employee update",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_delete_confirmation_cancel_keeps_employee[chromium]",
+      "feature": "Employee delete",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_confirm_delete_removes_only_selected_test_employee[chromium]",
+      "feature": "Employee delete",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_admin_can_create_employee_login[chromium]",
+      "feature": "Employee login creation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_employees.py::test_create_login_form_cancel_closes_form[chromium]",
+      "feature": "Employee login creation",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_about_page_is_public_and_renders_project_details[chromium]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_protected_routes_redirect_anonymous_user[chromium-/dashboard]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_protected_routes_redirect_anonymous_user[chromium-/employees]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_protected_routes_redirect_anonymous_user[chromium-/employees/new]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_protected_routes_redirect_anonymous_user[chromium-/employees/edit/1]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_protected_routes_redirect_anonymous_user[chromium-/profile]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_admin_navigation_links_are_available[chromium]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_navigation.py::test_unknown_route_returns_to_login_for_anonymous_user[chromium]",
+      "feature": "Navigation and access control",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_api_rejects_invalid_credentials",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_employee_api_requires_valid_bearer_token[missing-token]",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_employee_api_requires_valid_bearer_token[invalid-token]",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_account_creation_rejects_unknown_employee",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_duplicate_employee_login_is_rejected",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    },
+    {
+      "nodeid": "tests/test_auth.py::test_duplicate_login_email_is_rejected",
+      "feature": "Authentication and authorization",
+      "outcome": "passed",
+      "screenshot": null
+    }
+  ]
+}

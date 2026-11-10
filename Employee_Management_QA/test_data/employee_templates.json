@@ -1,0 +1,8 @@
+{
+  "employee": {
+    "employee_name": "QA Test Employee",
+    "age": 30,
+    "email_domain": "qa-example.test"
+  },
+  "ages_for_dashboard": [18, 30, 41]
+}
